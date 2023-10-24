@@ -1,0 +1,122 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- <app-page-title title="Create New" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+  <!-- end page title -->
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card  shadow-lg p-3 mb-5 bg-white rounded ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Create New Day-off request</h4>
+          <form class="needs-validation" name="formCreate" [formGroup]="formCreate" (ngSubmit)="save()" novalidate>
+            <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">creation successfull.
+            </ngb-alert>
+            <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
+            <div class="row mb-4">
+              <label for="dayoff_name" class="col-form-label col-lg-2">Name</label>
+              <div class="col-lg-10">
+                <input id="dayoff_name" name="dayoffname" formControlName="dayoff_name" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dayoff_name.errors }"
+                  value="{{username}}">
+              </div>
+              <div *ngIf="submitted && f.dayoff_name.errors" class="invalid-feedback">
+                <div *ngIf="f.dayoff_v.errors.required">Name is required</div>
+                <div *ngIf="f.dayoff_name.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="dayoff_position" class="col-form-label col-lg-2">Position</label>
+              <div class="col-lg-10">
+                <input id="dayoff_position" name="dayoffposition" formControlName="dayoff_position" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dayoff_name.errors }"
+                  placeholder="Enter Your Position">
+              </div>
+              <div *ngIf="submitted && f.dayoff_position.errors" class="invalid-feedback">
+                <div *ngIf="f.dayoff_position.errors.required">Position is required</div>
+                <div *ngIf="f.dayoff_position.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="dayoff_nbdays" class="col-form-label col-lg-2">Number of Day-off</label>
+              <div class="col-lg-10">
+                <input id="dayoff_nbdays" name="dayoffnbdays" formControlName="dayoff_nbdays" type="number"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dayoff_nbdays.errors }"
+                  placeholder="1">
+              </div>
+              <div *ngIf="submitted && f.dayoff_nbdays.errors" class="invalid-feedback">
+                <div *ngIf="f.dayoff_nbdays.errors.required">Number of day-off is required</div>
+                <div *ngIf="f.dayoff_nbdays.errors.pattern">This value should be a valid number</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="dayoff_type" class="col-form-label col-lg-2">Type of Day-off request</label>
+              <div class="col-lg-10">
+                <!-- <input id="dayoff_type" name="dayofftype" formControlName="dayoff_type" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dayoff_type.errors }"
+                  placeholder="Enter the type of Day-off request"> -->
+
+                  <ng-select [items]="typeValue" formControlName="dayoff_type" id="type" name="type"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dayoff_type.errors }"
+                  placeholder="Enter the type of Day-off request">></ng-select>
+
+              </div>
+              <div *ngIf="submitted && f.dayoff_type.errors" class="invalid-feedback">
+                <div *ngIf="f.dayoff_type.errors.required">The type day-off is required</div>
+                <div *ngIf="f.dayoff_type.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="selected" class="col-form-label col-lg-2">Period</label>
+              <div class="col-lg-10">
+                <ng-template #dateDayoff let-dateDayoff let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(dateDayoff)"
+                    [class.faded]="isHovered(dateDayoff) || isInside(dateDayoff)" (mouseenter)="hoveredDate = dateDayoff"
+                    (mouseleave)="hoveredDate = null">
+                    {{ dateDayoff.day }}
+                  </span>
+                </ng-template>
+                  <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange"
+                  autocomplete="off" formControlName="selected" [(ngModel)]="selected" />
+                <ngb-datepicker #dateDayoff (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="dateDayoff"
+                  outsideDays="hidden" [hidden]="hidden">
+                </ngb-datepicker>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="Backupperson" class="col-form-label col-lg-2">Backup person</label>
+              <div class="col-lg-10">
+                  <ng-select [items]="selectValue" bindLabel="email" [multiple]="false" id="Backupperson" 
+                  name="Backupperson"
+                  formControlName="Backupperson" type="text" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f.Backupperson.errors }"
+                  placeholder="Choose a users Backupperson..."></ng-select>
+                </div>
+              <div *ngIf="submitted && f.Backupperson.errors" class="invalid-feedback">
+                <div *ngIf="f.Backupperson.errors.required">Backupperson is required</div>
+                <div *ngIf="f.Backupperson.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="dayoff_motif" class="col-form-label col-lg-2">Day-off Motif</label>
+              <div class="col-lg-10">
+                <textarea class="form-control" formControlName="dayoff_motif"
+                  [ngClass]="{ 'is-invalid': submitted && f.dayoff_motif.errors }" id="dayoff_motif"
+                  rows="3" placeholder="Enter Day-off Motif"></textarea>
+              </div>
+              <div *ngIf="submitted && f.dayoff_motif.errors" class="invalid-feedback">
+                <div *ngIf="f.dayoff_motif.errors.required">motif is required</div>
+              </div>
+            </div>
+            <div class="row justify-content-end">
+              <div class="col-lg-10">
+                <button type="submit" class="btn btn-primary">Create Day-off</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div> <!-- container-fluid -->

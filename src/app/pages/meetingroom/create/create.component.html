@@ -1,0 +1,84 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- <app-page-title title="Create New" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+  <!-- end page title -->
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card  shadow-lg p-3 mb-5 bg-white rounded ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Create New Meetingroom</h4>
+          <form class="needs-validation" name="formCreate" [formGroup]="formCreate" (ngSubmit)="save()" novalidate>
+            <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">creation successfull.
+            </ngb-alert>
+            <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
+            <div class="row mb-4">
+              <label for="room" class="col-form-label col-lg-2">room</label>
+              <div class="col-lg-10">
+                <input id="meetingroom_room" name="meetingroomroom" formControlName="meetingroom_room" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.meetingroom_room.errors }"
+                  placeholder="Enter room...">
+              </div>
+              <div *ngIf="submitted && f.meetingroom_room.errors" class="invalid-feedback">
+                <div *ngIf="f.meetingroom_room.errors.required">Room is required</div>
+                <div *ngIf="f.meetingroom_room.errors.pattern">This value should be a valid room</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="meetingroom_purpose" class="col-form-label col-lg-2">Meetingroom Purpose</label>
+              <div class="col-lg-10">
+                <textarea class="form-control" formControlName="meetingroom_purpose"
+                  [ngClass]="{ 'is-invalid': submitted && f.meetingroom_purpose.errors }" id="meetingroom_purpose"
+                  rows="3" placeholder="Enter Meetingroom Purpose..."></textarea>
+              </div>
+              <div *ngIf="submitted && f.meetingroom_purpose.errors" class="invalid-feedback">
+                <div *ngIf="f.meetingroom_purpose.errors.required">Meetingroom_name is required</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="selected" class="col-form-label col-lg-2">Reservation Start Date</label>
+              <div class="col-lg-10">
+                <ng-template #startdate let-startdate let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(startdate)"
+                    [class.faded]="isHovered(startdate) || isInside(startdate)" (mouseenter)="hoveredDate = startdate"
+                    (mouseleave)="hoveredDate = null">
+                    {{ startdate.day }}
+                  </span>
+                </ng-template>
+                  <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange"
+                  autocomplete="off" formControlName="selected" [(ngModel)]="selected" />
+                <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="startdate"
+                  outsideDays="hidden" [hidden]="hidden">
+                </ngb-datepicker>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="selected" class="col-form-label col-lg-2">Reservation End Date</label>
+              <div class="col-lg-10">
+                <ng-template #enddate let-enddate let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(enddate)"
+                    [class.faded]="isHovered(enddate) || isInside(enddate)" (mouseenter)="hoveredDate = enddate"
+                    (mouseleave)="hoveredDate = null">
+                    {{ enddate.day }}
+                  </span>
+                </ng-template>
+                  <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange"
+                  autocomplete="off" formControlName="selected" [(ngModel)]="selected" />
+                <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="enddate"
+                  outsideDays="hidden" [hidden]="hidden">
+                </ngb-datepicker>
+              </div>
+            </div>
+            <div class="row justify-content-end">
+              <div class="col-lg-10">
+                <button type="submit" class="btn btn-primary">Create Meetingroom</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div> <!-- container-fluid -->

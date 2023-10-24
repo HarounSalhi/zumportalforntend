@@ -1,0 +1,135 @@
+<div class="container-fluid">
+    <!-- ... -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table align-middle table-nowrap table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col" style="width: 70px;">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
+      
+                    <th scope="col">Start Meeting </th>
+                    <th scope="col">Finish Meeting</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">State</th>
+                    <div *ngIf="loggedUser.role == 'MG' or loggedUser.role == 'TM'"> 
+                    <th scope="col">Approve</th>
+                    <th scope="col">Reject</th>
+                    </div>
+                    <div *ngIf="loggedUser.role == 'SU' or loggedUser.role == 'SM'"> 
+                      <th scope="col">Action</th>
+                    </div>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let room of rooms2; let i = index">
+                    <td>
+                      <div class="avatar-xs">
+                        <span class="avatar-title rounded-circle">{{ i + 1 }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <h5 class="font-size-14 mb-1">
+                        <a href="javascript: void(0);" class="text-dark">{{ room.name }}</a>
+                      </h5>
+                      <p class="text-muted mb-0">Room</p>
+                    </td>
+                    
+                    <td>{{ room.date }}</td>
+                    <td>{{ room.start_hour }}</td>
+                    <td>{{ room.finish_hour }}</td>
+                    <td><button type="button" class="btn btn-primary me-5" (click)="open(mymodal)">Check</button></td>
+                    <td><ng-container *ngIf="room.etat === null">In progress</ng-container>
+                      <ng-container *ngIf="room.etat === 0">Approved</ng-container>
+                      <ng-container *ngIf="room.etat === 1">Rejected</ng-container> </td>
+
+
+                      <div *ngIf="loggedUser.role == 'MG' or loggedUser.role == 'TM'"> 
+
+                      <td>
+                        <button type="button" class="btn btn-success" (click)="open(confirmModal)">
+                          <i class="fas fa-check"></i>
+                        </button>
+                      </td>
+                      
+                    <td><button type="button" class="btn btn-danger" (click)="open(confirmModal2)"><i class="fas fa-times"></i></button></td>
+                      </div>
+
+                    <div *ngIf="loggedUser.role == 'SU' or user.loggedUser == 'SM'"> 
+                      <button  tooltip="Modifier" 
+                      class="btn btn-success" style="width: 40px;"><i class="fas fa-edit"></i></button>
+                    &nbsp;
+                    <button  class="btn btn-danger" tooltip="Delete"
+                      style="width: 40px;"><i title="Delete" class="fa fa-trash"></i></button>
+                    </div>
+                    
+                   
+                 
+
+                  <ng-template #mymodal let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">Description :</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      
+                        
+                        
+                        <td>  {{room.description}} </td>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+                    </div>
+               
+                  </ng-template>
+
+
+                  <ng-template #confirmModal let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+                      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to approve this room?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" >No</button>
+                      <button type="button" class="btn btn-success" (click)="updateState(room); modal.dismiss();updatestate2(room)">Yes</button>
+
+                    </div>
+                  </ng-template>
+
+                  <ng-template #confirmModal2 let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+                      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to reject this room? 
+                      <!-- {{myDate | date: 'shortDate' }} -->
+                      <!-- {{ now | date:'HH:mm:ss'}} -->
+                     
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" >No</button>
+                      <button type="button" class="btn btn-danger" (click)="deleteroom(room.id); modal.dismiss()">Yes</button>
+
+
+                    </div>
+                  </ng-template>
+                  
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

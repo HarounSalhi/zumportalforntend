@@ -1,0 +1,192 @@
+<div class="container-fluid">
+    <!-- ... -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table align-middle table-nowrap table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col" style="width: 70px;">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Disponibility</th>
+      
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let room of rooms; let i = index">
+                    <td>
+                      <div class="avatar-xs">
+                        <span class="avatar-title rounded-circle">{{ i + 1 }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <h5 class="font-size-14 mb-1">
+                        <a href="javascript: void(0);" class="text-dark">{{ room.name }}</a>
+                      </h5>
+                      <p class="text-muted mb-0">Room</p>
+                    </td>
+                   <td [ngClass]="{'text-danger': room.dispo === 1, 'text-success': room.dispo === 0}">
+                   {{ room.dispo === 1 ? 'Not Available until ' + room.notAvailableUntil : 'Available' }}
+                      </td>
+
+                    
+                    <td>{{ room.capacity }}</td>
+                    
+                    <td>
+                      <button *ngIf="room.dispo === 0" class="btn btn-lg btn-outline-primary btn-primary text-white" (click)="open(mymodal)">Request</button>
+
+                      <button *ngIf="room.dispo === 1" class="btn btn-lg btn-outline-primary btn-primary text-white" (click)="open(mymodal2)">Request</button>
+
+ 
+                      
+                     <!--   <button type="button" class="btn btn-primary me-5" data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+                        REQ
+                      </button> -->
+                    </td>
+                  <!-- </tr> -->
+                  <ng-template #mymodal let-modal>
+                    <!-- ... Autres parties du modèle ... -->
+<div class="modal-body">
+  <form >
+    <div class="mb-3">
+      <label for="name" class="form-label" style="font-weight: bold;">  </label>
+
+      <br>
+<label id="name" class="form-label" style="font-weight: bold; font-size: 25px;">{{ room.name }}</label>
+
+    
+    </div>
+  
+    <div class="mb-3">
+      <label for="date">Date of the meeting:</label>
+      <input type="date" id="date" name="date" [value]="newRequest.date" (input)="newRequest.date = $event.target.value">
+    </div>
+    
+    <div class="mb-3">
+      <label for="startHour" class="form-label">Start of the meeting</label>
+      <input
+        type="time"
+        class="form-control"
+        id="start_hour"
+        name="start_hour"
+        [value]="newRequest.start_hour"
+        (input)="newRequest.start_hour = $event.target.value"
+        [style.color]="room.dispo === 1 && room.start_hour === room.notAvailableUntil ? 'red' : 'initial'"
+      >
+    </div>
+  
+    <div class="mb-3">
+      <label for="finishHour" class="form-label">End of the meeting</label>
+      <input type="time" class="form-control" id="finish_hour" name="finish_hour" [value]="newRequest.finish_hour" (input)="newRequest.finish_hour = $event.target.value">
+    </div>
+  
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input type="text" class="form-control" id="description" name="description" [value]="newRequest.description" (input)="newRequest.description = $event.target.value" style="height: 150px;">
+    </div>
+  
+    <button type="button" class="btn btn-primary" (click)="submitForm()">SEND</button>
+    </form>
+  
+</div>
+<!-- ... Autres parties du modèle ... -->
+
+                    
+                  </ng-template>
+                  <!-- <ng-template #mymodal let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">REQUEST</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form (ngSubmit)="submitForm()">
+                        <div class="mb-3">
+                          <label for="name">Name:</label>
+                          <input type="text" id="name" name="name" [(ngModel)]="newRequest.name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="date">Date of the meeting:</label>
+                          <input type="date" id="date" name="date" [(ngModel)]="newRequest.date">
+                        </div>
+                        <div class="mb-3">
+                          <label for="startHour">Start of the meeting:</label>
+                          <input type="time" id="startHour" name="startHour" [(ngModel)]="newRequest.startHour">
+                        </div>
+                        <div class="mb-3">
+                          <label for="finishHour">End of the meeting:</label>
+                          <input type="time" id="finishHour" name="finishHour" [(ngModel)]="newRequest.finishHour">
+                        </div>
+                        <div class="mb-3">
+                          <label for="description">Description:</label>
+                          <input type="text" id="description" name="description" [(ngModel)]="newRequest.description" style="height: 150px;">
+                        </div>
+                        <button type="submit" class="btn btn-primary">SEND</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+                    </div>
+                  </ng-template> -->
+                  
+
+
+
+                  <ng-template #mymodal2 let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">!! Not Available !!</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                     Sorry this room is not available 
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+                    </div>
+                  </ng-template>
+
+                  <!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLabel">Login Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"> -->
+       <!--  <form>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+          </div>
+          <button type="button" class="btn btn-primary">Login</button>
+        </form> -->
+      <!-- </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <script></script>

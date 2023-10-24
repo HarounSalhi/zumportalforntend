@@ -1,0 +1,140 @@
+<div class="container-fluid">
+  <!-- start page title -->
+  <!-- <app-page-title title="Create New" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+  <!-- end page title -->
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card  shadow-lg p-3 mb-5 bg-white rounded ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Create New Remotework</h4>
+          <form class="needs-validation" name="formCreate" [formGroup]="formCreate" (ngSubmit)="save()" novalidate>
+            <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">creation successfull.
+            </ngb-alert>
+            <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
+            <div class="row mb-4">
+              <label for="remotework_name" class="col-form-label col-lg-2">Name</label>
+              <div class="col-lg-10">
+                <input id="remotework_name" name="remoteworkname" formControlName="remotework_name" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remotework_name.errors }"
+                  placeholder="Enter Your Name">
+              </div>
+              <div *ngIf="submitted && f.remotework_name.errors" class="invalid-feedback">
+                <div *ngIf="f.remotework_v.errors.required">Name is required</div>
+                <div *ngIf="f.remotework_name.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="remotework_position" class="col-form-label col-lg-2">Position</label>
+              <div class="col-lg-10">
+                <input id="remotework_position" name="remoteworkposition" formControlName="remotework_position" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remotework_name.errors }"
+                  placeholder="Enter Your Position">
+              </div>
+              <div *ngIf="submitted && f.remotework_position.errors" class="invalid-feedback">
+                <div *ngIf="f.remotework_position.errors.required">Position is required</div>
+                <div *ngIf="f.remotework_position.errors.pattern">This value should be a valid name</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="remotework_nbdays" class="col-form-label col-lg-2">Number of Remote work days</label>
+              <div class="col-lg-10">
+                <input id="remotework_nbdays" name="remoteworknbdays" formControlName="remotework_nbdays" type="number"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remotework_nbdays.errors }"
+                  placeholder="1" (change)="onChange($event)" [(ngModel)]="nbr_days">
+              </div>
+              <div *ngIf="submitted && f.remotework_nbdays.errors" class="invalid-feedback">
+                <div *ngIf="f.remotework_nbdays.errors.required">Number of remote work days is required</div>
+                <div *ngIf="f.remotework_nbdays.errors.pattern">This value should be a valid number</div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <label for="selected" class="col-form-label col-lg-2">Period</label>
+              <div class="col-lg-10">
+                <ng-template #startdate let-startdate let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(startdate)"
+                    [class.faded]="isHovered(startdate) || isInside(startdate)" (mouseenter)="hoveredDate = startdate"
+                    (mouseleave)="hoveredDate = null">
+                    {{ startdate.day }}
+                  </span>
+                </ng-template>
+                  <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange"
+                  autocomplete="off" formControlName="selected" [(ngModel)]="selected" />
+                <ngb-datepicker #startdate (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="startdate"
+                  outsideDays="hidden" [hidden]="hidden">
+                </ngb-datepicker>
+              </div>
+            </div>
+            <!-- <div class="row mb-4">
+              <label for="selected" class="col-form-label col-lg-2">Return Date</label>
+              <div class="col-lg-10">
+                <ng-template #returndate let-returndate let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(returndate)"
+                    [class.faded]="isHovered(returndate) || isInside(returndate)" (mouseenter)="hoveredDate = returndate"
+                    (mouseleave)="hoveredDate = null">
+                    {{ returndate.day }}
+                  </span>
+                </ng-template>
+                  <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange"
+                  autocomplete="off" formControlName="selected" [(ngModel)]="selected" />
+                <ngb-datepicker #returndate (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="returndate"
+                  outsideDays="hidden" [hidden]="hidden">
+                </ngb-datepicker>
+              </div>
+            </div> -->
+            <div class="row mb-4">
+              <label for="remotework_motif" class="col-form-label col-lg-2">Remote work Motif</label>
+              <div class="col-lg-10">
+                <textarea class="form-control" formControlName="remotework_motif"
+                  [ngClass]="{ 'is-invalid': submitted && f.remotework_motif.errors }" id="remotework_motif"
+                  rows="3" placeholder="Enter Remote work Motif"></textarea>
+              </div>
+              <div *ngIf="submitted && f.remotework_motif.errors" class="invalid-feedback">
+                <div *ngIf="f.remotework_motif.errors.required">motif is required</div>
+              </div>
+            </div>
+
+            <!-- Working Plan -->
+            <div class="table-responsive">
+              <table class=" table remotework-list-table
+                table-nowrap align-middle table-borderless">
+                <thead class="table-light" >
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Task</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let nbr of list">
+                    <td>
+                      <input name="remoteworkplanday" formControlName="remoteworkplanday" type="text"
+                  class="form-control">
+                    </td>
+                    <td>
+                      <input name="remoteworkplantask" formControlName="remoteworkplantask" type="text"
+                  class="form-control">
+                    </td>
+                    <td> 
+                      <input id="remoteworkplanstatus" name="remoteworkplanstatus" formControlName="remoteworkplanstatus" type="text"
+                  class="form-control">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+
+            <div class="row justify-content-end">
+              <div class="col-lg-10">
+                <button type="submit" class="btn btn-primary">Create Remotework</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div> <!-- container-fluid -->

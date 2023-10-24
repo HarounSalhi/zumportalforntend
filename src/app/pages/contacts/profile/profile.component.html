@@ -1,0 +1,138 @@
+<div class="container-fluid">
+  <app-page-title title="Profile" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h4 class="card-title mb-4">User Profile</h4>
+          
+          <form class="needs-validation" name="formProfile" [formGroup]="formProfile" (ngSubmit)="save()" novalidate>
+            <!-- <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">Profile update successful.</ngb-alert>
+            <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert> -->
+            <p>Your remote work amount is: {{user.ttamount}}</p>
+            <p>Your day off amount is: {{user.dayoffamount}}</p>
+            <div *ngIf="profilePicturePreview" class="row mb-4">
+              <div class="col-lg-2"></div>
+              <div class="col-lg-10">
+                <div class="text-center">
+                  <img [src]="profilePicturePreview" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px;">
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="profilePicture" class="col-form-label col-lg-2">Profile Picture</label>
+              <div class="col-lg-10">
+                <div
+                  class="drop-zone"
+                  (dragover)="onDragOver($event)"
+                  (dragleave)="onDragLeave($event)"
+                  (drop)="onDrop($event)"
+                  (click)="openFilePicker()"
+                >
+                  <input
+                    type="file"
+                    id="profilePicture"
+                    name="profilePicture"
+                    class="custom-file-input"
+                    (change)="onProfilePictureChange($event)"
+                    accept=".jpg, .jpeg, .png" 
+                    style="display: none;"
+
+                  >
+                  <label class="custom-file-label" for="profilePicture">Drag & Drop or Choose file</label>
+                </div>
+              </div>
+            </div>
+            
+            
+            
+            
+
+            <div class="row mb-4">
+              <label for="firstname" class="col-form-label col-lg-2">First Name</label>
+              <div class="col-lg-10">
+                <input id="firstname" name="firstname" formControlName="firstname" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstname.errors }"
+                  value="{{ user.firstname }}">
+              </div>
+              <div *ngIf="submitted && f.firstname.errors" class="invalid-feedback">
+                <div *ngIf="f.firstname.errors.required">First Name is required</div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="lastname" class="col-form-label col-lg-2">Last Name</label>
+              <div class="col-lg-10">
+                <input id="lastname" name="lastname" formControlName="lastname" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }"
+                  value="{{ user.lastname }}">
+              </div>
+              <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+                <div *ngIf="f.lastname.errors.required">Last Name is required</div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="email" class="col-form-label col-lg-2">Email</label>
+              <div class="col-lg-10">
+                <input id="email" name="email" formControlName="email" type="email"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                  value="{{ user.email }}">
+              </div>
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.email">Invalid email format</div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="tel" class="col-form-label col-lg-2">Telephone Number</label>
+              <div class="col-lg-10">
+                <input id="tel" name="tel" formControlName="tel" type="tel"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.tel.errors }"
+                  value="{{ user.tel }}">
+              </div>
+              <div *ngIf="submitted && f.tel.errors" class="invalid-feedback">
+                <div *ngIf="f.tel.errors.required">Telephone Number is required</div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="role" class="col-form-label col-lg-2">Role</label>
+              <div class="col-lg-10">
+                <input id="role" name="role" formControlName="role" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
+                  value="{{ user.role }}" disabled="true">
+              </div>
+              <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                <div *ngIf="f.role.errors.required">Role is required</div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label for="position" class="col-form-label col-lg-2">Position</label>
+              <div class="col-lg-10">
+                <input id="position" name="position" formControlName="position" type="text"
+                  class="form-control" [ngClass]="{ 'is-invalid': submitted && f.position.errors }"
+                  value="{{ user.position }}">
+              </div>
+              <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+                <div *ngIf="f.position.errors.required">Position is required</div>
+              </div>
+            </div>
+
+            
+
+            <div class="row justify-content-end">
+              <div class="col-lg-10">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
